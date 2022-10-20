@@ -1,18 +1,41 @@
 package org.example.test;
 
 import org.example.calculator.Calculator;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CalculatorTest {
 
+    private Calculator calculator;
+    private static float[] testArray;
+
+
+    @BeforeAll      // This method will be called before all the methods below
+    public static void setuoGlobal () {
+        System.out.println("Starting calculator tests...");
+        testArray = new float[]{3, 45, 6.7f, 12, 4.2f, 8.9f};
+    }
+
+    @BeforeEach    // This method is called before the start of run of EACH test
+    public void setupEach() {
+        calculator = new Calculator();
+    }
+
+    @AfterEach      // This method is called after the run of EACH test
+    public void finalSetupEach() {
+        System.out.println("This test is finished running!");
+    }
+
+    @AfterAll
+    public static void finalSetupGlobal() {
+        System.out.println("Calculator tests are finished succesfully!");
+    }
+
     @Test
     public void shouldReturnSumWhenAddArrayIsCalled() {
-        float[] array = {3, 45, 6.7f, 12, 4.2f, 8.9f};
+        float[] array = testArray;
 
-        Calculator calculator = new Calculator();
         float result = calculator.addArray(array);
 
         Assertions.assertEquals(79.799995f,result);
@@ -20,21 +43,22 @@ public class CalculatorTest {
 
     @Test
     public void shouldReturnDividedSumWhenDivideArrayIsCalled() {
-        float[] array = {25, 5, 2};
+        float[] array = testArray;
 
-        Calculator calculator = new Calculator();
         float result = calculator.divideArray(array);
 
-        Assertions.assertEquals(2.5f,result);
+        Assertions.assertEquals(2.218265E-5f,result);
     }
 
     @Test
+    @Disabled
     public void shouldReturnMultipliedSumWhenMultiplyArrayIsCalled() {
-        float[] array = {2, 2, 4, 1, 5, 2};
+        float[] array = testArray;
 
-        Calculator calculator = new Calculator();
         float result = calculator.multiplyArray(array);
 
-        Assertions.assertEquals(160,result);
+        Assertions.assertAll(() -> Assertions.assertTrue(result > 0));
+
+
     }
 }
